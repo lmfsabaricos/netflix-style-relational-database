@@ -15,7 +15,7 @@ README files found in this repository.**
 | 1           |  Jingxi Hu             |    jhu7@mail.sfsu.edu       | Team Lead               |
 | 2           |                        |                             | Database Architect      |
 | 3           |                        |                             | Database Developer      |
-| 4           |                        |                             | Database Analyst/Tester |
+| 4           | Louis Miguel Sabaricos |    lsabaricos1@sfsu.edu     | Database Analyst/Tester |
 
 
 --- 
