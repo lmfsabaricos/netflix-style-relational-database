@@ -1,4 +1,3 @@
-USE MultimediaContentDB;
 
 -- Drop all referencing tables first
 DROP TABLE IF EXISTS Content_WatchHistory;
@@ -24,6 +23,9 @@ DROP TABLE IF EXISTS Content_Release;
 DROP TABLE IF EXISTS Genre;
 DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS Country;
+DROP TABLE IF EXISTS Director_Assignment_Errors;
+DROP TABLE IF EXISTS User_Notification;
+
 
 -- Drop subscription/payment/user core tables
 DROP TABLE IF EXISTS Transaction;
@@ -245,4 +247,23 @@ CREATE TABLE Content_WatchHistory (
 
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (content_id) REFERENCES Content(content_id)
+);
+
+CREATE TABLE User_Notification (
+    notification_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    notification_type VARCHAR(50),
+    message TEXT,
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+CREATE TABLE Director_Assignment_Errors (
+    error_id INT PRIMARY KEY AUTO_INCREMENT,
+    content_id INT NOT NULL,
+    director_id INT NOT NULL,
+    error_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    error_message VARCHAR(255),
+    FOREIGN KEY (content_id) REFERENCES content(content_id),
+    FOREIGN KEY (director_id) REFERENCES director(director_id)
 );

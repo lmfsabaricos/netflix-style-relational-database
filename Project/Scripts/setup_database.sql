@@ -1,5 +1,7 @@
-CREATE DATABASE IF NOT EXISTS MultimediaContentDB;
+DROP DATABASE IF EXISTS MultimediaContentDB;
+
+CREATE DATABASE MultimediaContentDB;
 
 USE MultimediaContentDB;
 
-SELECT DATABASE() AS 'Current Database'; 
+SELECT DATABASE() AS 'Current Database';

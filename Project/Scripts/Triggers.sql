@@ -1,102 +1,80 @@
--- Trigger-based Requirements Implementation
-
--- 1. Limit Watchlist Capacity
--- Enforce a maximum of 50 items in a user's Watchlist
--- Automatically remove the oldest item if the user adds an item exceeding the limit
 
 DELIMITER //
 
-CREATE TRIGGER before_watchlist_content_insert
-BEFORE INSERT ON Watchlist_Content
+-- 1. Watchlist Limit Trigger
+-- This trigger verifies whether a user had 50 items in their watchlist already.
+-- If they do then the system will remove the oldest before adding the new item
+
+
+CREATE TRIGGER before_watchlist_insert
+BEFORE INSERT ON watchlist_content
 FOR EACH ROW
 BEGIN
-    DECLARE item_count INT;
-    
-    -- Count current items in the watchlist
-    SELECT COUNT(*) INTO item_count
-    FROM Watchlist_Content
+    DECLARE total_items INT;
+
+    SELECT COUNT(*) INTO total_items
+    FROM watchlist_content
     WHERE watchlist_id = NEW.watchlist_id;
-    
-    -- If adding this item would exceed 50, remove the oldest item
-    IF item_count >= 50 THEN
-        DELETE FROM Watchlist_Content
+
+    IF total_items >= 50 THEN
+        DELETE FROM watchlist_content
         WHERE watchlist_id = NEW.watchlist_id
         AND added_date = (
             SELECT MIN(added_date)
-            FROM Watchlist_Content
+            FROM watchlist_content
             WHERE watchlist_id = NEW.watchlist_id
         )
         LIMIT 1;
     END IF;
-END //
+END;
+//
 
-DELIMITER ;
-
--- 2. Rating Impact on Content Availability
--- Automatically set Content_Availability status to "Archived" if average rating falls below 2.0
-
-DELIMITER //
+-- 2. Rating Check for Content Availability
+-- After a reviewer leaves a review, this trigger then checks the new average rating.
+-- If the Average is below 2.0 it is marked as ‘Archived’.
 
 CREATE TRIGGER after_review_insert
-AFTER INSERT ON Review
+AFTER INSERT ON review
 FOR EACH ROW
 BEGIN
-    DECLARE avg_rating DECIMAL(3,2);
-    
-    -- Calculate average rating for the content
-    SELECT AVG(rating) INTO avg_rating
-    FROM Review
+    DECLARE avg_score DECIMAL(3,2);
+
+    SELECT AVG(rating) INTO avg_score
+    FROM review
     WHERE content_id = NEW.content_id;
-    
-    -- If average rating is below 2.0, update availability status
-    IF avg_rating < 2.0 THEN
-        UPDATE Content_Availability ca
-        JOIN Content c ON c.availability_id = ca.availability_id
-        SET ca.status = 'unavailable'
+
+    IF avg_score < 2.0 THEN
+        UPDATE content_availability ca
+        JOIN content c ON ca.availability_id = c.availability_id
+        SET ca.status = 'Archived'
         WHERE c.content_id = NEW.content_id;
     END IF;
-END //
+END;
+//
 
-DELIMITER ;
+-- 3. Prevent Duplicate Director Assignment
+--  This trigger stops someone from assigning the same director to the same content again.
+-- If it happens, the attempt is logged and the update is blocked.
 
--- 3. Ensure Unique Director for Content
--- Prevent duplicate Director entries for the same Content
--- Log failed attempts in Director_Assignment_Errors table
-
--- First, create the error logging table
-CREATE TABLE IF NOT EXISTS Director_Assignment_Errors (
-    error_id INT PRIMARY KEY AUTO_INCREMENT,
-    content_id INT NOT NULL,
-    director_id INT NOT NULL,
-    error_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    error_message VARCHAR(255),
-    FOREIGN KEY (content_id) REFERENCES Content(content_id),
-    FOREIGN KEY (director_id) REFERENCES Director(director_id)
-);
-
-DELIMITER //
-
-CREATE TRIGGER before_content_director_update
-BEFORE UPDATE ON Content
+CREATE TRIGGER before_director_update
+BEFORE UPDATE ON content
 FOR EACH ROW
 BEGIN
-    -- Check if the director is already assigned to this content
-    IF EXISTS (
-        SELECT 1 
-        FROM Content 
-        WHERE director_id = NEW.director_id 
-        AND content_id = NEW.content_id
-    ) THEN
-        -- Log the error
-        INSERT INTO Director_Assignment_Errors 
-        (content_id, director_id, error_message)
-        VALUES 
-        (NEW.content_id, NEW.director_id, 'Attempted to assign duplicate director');
-        
-        -- Prevent the update
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Cannot assign duplicate director to content';
-    END IF;
-END //
+    IF NEW.director_id = OLD.director_id THEN
+        INSERT INTO director_assignment_errors (
+            content_id,
+            director_id,
+            error_message
+        ) VALUES (
+            NEW.content_id,
+            NEW.director_id,
+            'Duplicate director assignment attempt.'
+        );
 
-DELIMITER ; 
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'This director is already assigned to the content.';
+    END IF;
+END;
+//
+
+DELIMITER ;
