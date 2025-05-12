@@ -20,6 +20,18 @@ README files found in this repository.**
 
 --- 
 
+## Contributions
+
+Louis Miguel Sabaricos
+
+*Imported data.csv for Section 2 (import.data.sql)
+*Worked on Section 3: Business Requirements.
+*Implemented triggers, functions, procedures, and scheduled events.
+*Wrote the Tests.sql script in order to verify the functionality of the database.
+*Validated data integrity and got the database components to interact correctly.
+
+
+
 ## Team Roles for this Project  
 
 The responsibilities outlined below are provided as recommendations.
