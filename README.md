@@ -14,8 +14,8 @@ README files found in this repository.**
 |-------------|------------------------|-----------------------------|-------------------------|
 | 1           |  Jingxi Hu             |    jhu7@mail.sfsu.edu       | Team Lead               |
 | 2           |  Sofia Brazda          |    sbrazda@sfsu.edu         | Database Architect      |
-| 3           | Andrew Brockenborough                   |  abrockenborough@sfsu.edu                 | Database Developer      | 
-| 4           | Louis Miguel Sabaricos |    lsabaricos1@sfsu.edu     | Database Analyst/Tester |
+| 3           | Louis Miguel Sabaricos |  lsabaricos1@sfsu.edu       | Database Developer      | 
+| 4           | Andrew Brockenborough  |  abrockenborough@sfsu.edu   | Database Analyst/Tester |
 
 
 --- 
