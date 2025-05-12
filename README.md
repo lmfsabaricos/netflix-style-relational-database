@@ -25,10 +25,9 @@ README files found in this repository.**
 Louis Miguel Sabaricos
 
 1. Imported data.csv for Section 2 (import.data.sql)
-2. Worked on Section 3: Business Requirements.
-3. Implemented triggers, functions, procedures, and scheduled events.
-4. Wrote the Tests.sql script in order to verify the functionality of the database.
-5. Validated data integrity and got the database components to interact correctly.
+2. Worked on Section 3 which implements triggers, functions, procedures, and scheduled events.
+3. Wrote the Tests.sql script in order to verify the functionality of the database.
+4. Validated data integrity and got the database components to interact correctly.
 
 
 
