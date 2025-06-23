@@ -14,11 +14,22 @@ README files found in this repository.**
 |-------------|------------------------|-----------------------------|-------------------------|
 | 1           |  Jingxi Hu             |    jhu7@mail.sfsu.edu       | Team Lead               |
 | 2           |  Sofia Brazda          |    sbrazda@sfsu.edu         | Database Architect      |
-| 3           | Andrew Brockenborough                   |  abrockenborough@sfsu.edu                 | Database Developer      | 
-| 4           | Louis Miguel Sabaricos |    lsabaricos1@sfsu.edu     | Database Analyst/Tester |
+| 3           | Louis Miguel Sabaricos |  lsabaricos1@sfsu.edu       | Database Developer      | 
+| 4           | Andrew Brockenborough  |  abrockenborough@sfsu.edu   | Database Analyst/Tester |
 
 
 --- 
+
+## Contributions
+
+Louis Miguel Sabaricos
+
+1. Imported data.csv for Section 2 (import.data.sql)
+2. Worked on Section 3 which implements triggers, functions, procedures, and scheduled events.
+3. Wrote the Tests.sql script in order to verify the functionality of the database.
+4. Validated data integrity and got the database components to interact correctly.
+
+
 
 ## Team Roles for this Project  
 

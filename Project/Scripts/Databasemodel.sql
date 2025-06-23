@@ -173,7 +173,7 @@ CREATE TABLE Actor_Content (
 
 CREATE TABLE Tag (
     tag_id INT PRIMARY KEY AUTO_INCREMENT,
-    tag_name VARCHAR(100) NOT NULL         -- eg, 'Comedy'
+    tag_name VARCHAR(100) NOT NULL         -- 'Comedy'
 );
 
 CREATE TABLE Tag_Content (
